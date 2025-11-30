@@ -4,6 +4,8 @@
 #include <stdint.h>
 #include <limits.h>
 #include <string.h> // For memcpy
+#include <math.h>   // For sqrt
+#include <time.h>   // For seeding random number generator
 
 #ifdef DEBUG
 #include <stdio.h>
@@ -131,5 +133,90 @@ void factorial_batch(int32_t n, int32_t iterations, int64_t* results) {
   // Copy the factorial result multiple times
   for (int32_t iter = 0; iter < iterations; iter++) {
     results[iter] = fact;
+  }
+}
+
+// Simple linear congruential generator for reproducible results
+static uint32_t lcg_state = 1;
+static uint32_t lcg_next() {
+  lcg_state = (1103515245 * lcg_state + 12345) % 2147483648;
+  return lcg_state;
+}
+
+// Generate random double between 0 and 1
+static double lcg_random() {
+  return (double)lcg_next() / 2147483648.0;
+}
+
+// Monte Carlo Pi calculation using the ratio of points inside a quarter circle
+double monte_carlo_pi(int64_t num_samples) {
+  if (num_samples <= 0) return 0.0;
+
+  int64_t points_inside_circle = 0;
+
+  // Seed the random number generator for reproducible results
+  lcg_state = 12345;
+
+  for (int64_t i = 0; i < num_samples; i++) {
+    double x = lcg_random();
+    double y = lcg_random();
+
+    // Check if point (x,y) is inside the quarter circle (x² + y² ≤ 1)
+    if (x * x + y * y <= 1.0) {
+      points_inside_circle++;
+    }
+  }
+
+  // Pi approximation: 4 * (points_inside_circle / total_points)
+  return 4.0 * (double)points_inside_circle / (double)num_samples;
+}
+
+// Batch Monte Carlo Pi calculation for multiple iterations
+void monte_carlo_pi_batch(int64_t num_samples, int32_t iterations, double* results) {
+  if (num_samples <= 0 || iterations <= 0 || iterations > 10000 || results == NULL) {
+    return;
+  }
+
+  for (int32_t iter = 0; iter < iterations; iter++) {
+    results[iter] = monte_carlo_pi(num_samples);
+  }
+}
+
+// Matrix multiplication: C = A * B
+// A is m x k, B is k x n, C is m x n
+void matrix_multiply(int32_t m, int32_t k, int32_t n,
+                     const double* A, const double* B, double* C) {
+  if (m <= 0 || k <= 0 || n <= 0 || A == NULL || B == NULL || C == NULL) {
+    return;
+  }
+
+  // Initialize result matrix to zero
+  memset(C, 0, m * n * sizeof(double));
+
+  // Perform matrix multiplication with optimized loop ordering
+  for (int32_t i = 0; i < m; i++) {
+    for (int32_t j = 0; j < n; j++) {
+      double sum = 0.0;
+      for (int32_t p = 0; p < k; p++) {
+        sum += A[i * k + p] * B[p * n + j];
+      }
+      C[i * n + j] = sum;
+    }
+  }
+}
+
+// Batch matrix multiplication for performance testing
+void matrix_multiply_batch(int32_t m, int32_t k, int32_t n,
+                          const double* A, const double* B,
+                          int32_t iterations, double* results) {
+  if (m <= 0 || k <= 0 || n <= 0 || iterations <= 0 ||
+      iterations > 1000 || A == NULL || B == NULL || results == NULL) {
+    return;
+  }
+
+  // Perform matrix multiplication multiple times
+  for (int32_t iter = 0; iter < iterations; iter++) {
+    double* C = &results[iter * m * n];
+    matrix_multiply(m, k, n, A, B, C);
   }
 }

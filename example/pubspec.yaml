@@ -11,6 +11,7 @@ dependencies:
     sdk: flutter
   code_asset_example:
     path: ../
+  fl_chart: ^0.70.0
 
 dev_dependencies:
   flutter_test:

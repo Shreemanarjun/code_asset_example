@@ -81,6 +81,76 @@ class NativeLibrary {
 
   late final _factorial_batchPtr = _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int32, ffi.Int32, ffi.Pointer<ffi.Int64>)>>('factorial_batch');
   late final _factorial_batch = _factorial_batchPtr.asFunction<void Function(int, int, ffi.Pointer<ffi.Int64>)>();
+
+  double monte_carlo_pi(
+    int num_samples,
+  ) {
+    return _monte_carlo_pi(
+      num_samples,
+    );
+  }
+
+  late final _monte_carlo_piPtr = _lookup<ffi.NativeFunction<ffi.Double Function(ffi.Int64)>>('monte_carlo_pi');
+  late final _monte_carlo_pi = _monte_carlo_piPtr.asFunction<double Function(int)>();
+
+  void monte_carlo_pi_batch(
+    int num_samples,
+    int iterations,
+    ffi.Pointer<ffi.Double> results,
+  ) {
+    return _monte_carlo_pi_batch(
+      num_samples,
+      iterations,
+      results,
+    );
+  }
+
+  late final _monte_carlo_pi_batchPtr = _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int64, ffi.Int32, ffi.Pointer<ffi.Double>)>>('monte_carlo_pi_batch');
+  late final _monte_carlo_pi_batch = _monte_carlo_pi_batchPtr.asFunction<void Function(int, int, ffi.Pointer<ffi.Double>)>();
+
+  void matrix_multiply(
+    int m,
+    int k,
+    int n,
+    ffi.Pointer<ffi.Double> A,
+    ffi.Pointer<ffi.Double> B,
+    ffi.Pointer<ffi.Double> C,
+  ) {
+    return _matrix_multiply(
+      m,
+      k,
+      n,
+      A,
+      B,
+      C,
+    );
+  }
+
+  late final _matrix_multiplyPtr = _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int32, ffi.Int32, ffi.Int32, ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Double>)>>('matrix_multiply');
+  late final _matrix_multiply = _matrix_multiplyPtr.asFunction<void Function(int, int, int, ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Double>)>();
+
+  void matrix_multiply_batch(
+    int m,
+    int k,
+    int n,
+    ffi.Pointer<ffi.Double> A,
+    ffi.Pointer<ffi.Double> B,
+    int iterations,
+    ffi.Pointer<ffi.Double> results,
+  ) {
+    return _matrix_multiply_batch(
+      m,
+      k,
+      n,
+      A,
+      B,
+      iterations,
+      results,
+    );
+  }
+
+  late final _matrix_multiply_batchPtr = _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Int32, ffi.Int32, ffi.Int32, ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Double>, ffi.Int32, ffi.Pointer<ffi.Double>)>>('matrix_multiply_batch');
+  late final _matrix_multiply_batch = _matrix_multiply_batchPtr.asFunction<void Function(int, int, int, ffi.Pointer<ffi.Double>, ffi.Pointer<ffi.Double>, int, ffi.Pointer<ffi.Double>)>();
 }
 
 typedef int_least8_t = ffi.Int8;
