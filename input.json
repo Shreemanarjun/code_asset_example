@@ -1,0 +1,10 @@
+{
+  "packageRoot": "/Users/shreemanarjunsahu/personal/hooks/code_asset_example",
+  "packageName": "code_asset_example",
+  "outDirShared": "/Users/shreemanarjunsahu/personal/hooks/code_asset_example/.dart_tool/hooks_runner/code_asset_example/shared",
+  "outFile": "/Users/shreemanarjunsahu/personal/hooks/code_asset_example/.dart_tool/hooks_runner/code_asset_example/output.json",
+  "config": {
+    "build_asset_types": ["code_assets/code"],
+    "linking_enabled": true
+  }
+}
