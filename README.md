@@ -11,6 +11,8 @@ This package serves as a complete reference implementation for developers lookin
 - **Automated Build Hooks**: Automatic native library building during package compilation
 - **Cross-Platform Support**: Native code compilation for macOS, Windows, and Linux
 - **Isolate Support**: Concurrent native operations using Dart isolates
+- **Multiple Algorithm Implementations**: Fibonacci, Factorial, Monte Carlo Pi, and Matrix Multiplication
+- **Batch Processing**: High-performance bulk computations for data processing workloads
 
 ### Benchmarking Suite
 - **Comprehensive Performance Analysis**: Compare Dart vs FFI implementations
@@ -26,7 +28,7 @@ This package serves as a complete reference implementation for developers lookin
 
 ## 📦 What's Included
 
-- **Native C Implementation**: Optimized Fibonacci and factorial algorithms in C
+- **Native C Implementation**: Optimized algorithms including Fibonacci, Factorial, Monte Carlo Pi estimation, and Matrix Multiplication
 - **Dart FFI Bindings**: Complete FFI integration with type-safe interfaces
 - **Build Hook System**: Automatic native library compilation via `hooks/build.dart`
 - **Benchmark Harness**: Comprehensive performance testing suite
@@ -69,6 +71,8 @@ cd example && flutter run
 ### Benchmark Categories
 - **Fibonacci Sequence**: Single value and batch computation
 - **Factorial Calculation**: Single value and batch computation
+- **Monte Carlo Pi Estimation**: Statistical computation using random sampling
+- **Matrix Multiplication**: Linear algebra operations for scientific computing
 - **Execution Modes**: Direct calls vs Isolate-based concurrent execution
 
 ### Sample Benchmark Output
@@ -133,9 +137,25 @@ import 'package:code_asset_example/native_library.dart';
 final fibResult = await NativeLibraryProvider.fibo(20);
 final factResult = await NativeLibraryProvider.factorial(15);
 
+// Monte Carlo Pi estimation
+final piEstimate = await NativeLibraryProvider.monteCarloPi(1000000);
+
+// Matrix multiplication (2x3 * 3x2 = 2x2 result)
+final matrixA = [1.0, 2.0, 3.0, 4.0, 5.0, 6.0]; // 2x3
+final matrixB = [7.0, 8.0, 9.0, 10.0, 11.0, 12.0]; // 3x2
+final matrixResult = await NativeLibraryProvider.matrixMultiply(2, 3, 2, matrixA, matrixB);
+
 // Batch operations
 final buffer = List<int>.filled(50, 0);
 await NativeLibraryProvider.fiboBatch(20, 50, buffer);
+
+// Batch Pi estimation
+final piResults = List<double>.filled(10, 0.0);
+await NativeLibraryProvider.monteCarloPiBatch(100000, 10, piResults);
+
+// Batch matrix multiplication
+final matrixResults = List<double>.filled(20, 0.0); // 10 iterations * 2 results
+await NativeLibraryProvider.matrixMultiplyBatch(2, 3, 2, matrixA, matrixB, 10, matrixResults);
 ```
 
 ### Isolate-Based Concurrent Processing
@@ -177,12 +197,14 @@ The package includes a complete Flutter example (`example/`) demonstrating:
 ### Directory Structure
 ```
 ├── src/                 # Native C source code
-│   ├── native_add_library.c
-│   └── native_add_library.h
+│   ├── native_add_library.c    # C implementations of all algorithms
+│   └── native_add_library.h    # C function declarations
 ├── lib/                 # Dart FFI bindings and implementations
-│   ├── native_library.dart
-│   ├── benchmark_harness.dart
-│   └── add.g.dart       # Auto-generated FFI bindings
+│   ├── native_library.dart     # Main provider with FFI calls
+│   ├── benchmark_harness.dart  # Benchmark classes for performance testing
+│   ├── add.g.dart              # Auto-generated FFI bindings
+│   ├── fibo.g.dart             # Fibonacci FFI bindings
+│   └── benchmark_runner.dart   # Benchmark execution utilities
 ├── hooks/               # Build hooks for native compilation
 │   └── build.dart
 ├── bin/                 # Executable scripts
